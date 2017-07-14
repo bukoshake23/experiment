@@ -1,0 +1,72 @@
+{% extends 'store/base.html' %}
+
+{% block body %}
+	<style>
+		.remaining-stock {
+			border: 1px;
+			border-radius: 10px;
+			background-color:white;				
+			padding-top: 19;
+			padding-bottom: 19;
+			padding-left: 18;
+			padding-right: 18;					
+		}
+	
+		.transaction-complete {
+			border: 1px;
+			border-radius: 10px;
+			background: white;			
+		}
+	
+
+	</style>
+
+	{% if not out_stock %}
+		<div class='container transaction-complete'>
+			<br><br><center><h3><strong>Thank you for purchasing!</strong> Your order will be delivered within 7 working days. </h3></center><br><br>	
+		</div>
+	{% else %}
+		<div class='container'>
+			<div class='alert alert-danger'>
+				<center>
+					<h2>Sorry, item(s) quantity ordered are no longer available.</h2>
+					<h3>Kindly delete order or reduce quantity.</h3>
+				</center>
+			</div>
+		</div>
+		
+		<div class='container-fluid'>
+			<div class='row'>
+				<div class='col-xs-1 col-sm-2 col-md-1'>
+				</div>
+				<div class='col-xs-10 col-sm-8 col-md-10 remaining-stock'>				
+					<center><h4><strong>Remaining stock</strong></h4></center><br>
+					<div class='table-responsive'>
+						<table class='table'>
+							<thead>
+								<th>Item</th>
+								<th>Quantity</th>
+							</thead>
+							<tbody>
+								{% for type, data in supply_quantity_display.items %}								
+									<tr>
+										<td>{{ type }}</td>										
+										<td>
+										{% for size, quantity in data.items %}	
+											{% if size == "No Size" %}								
+												{{ quantity }}
+											{% else %}
+												{{ size }} : {{ quantity }}<br>										
+											{% endif %}
+										{% endfor %}								
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

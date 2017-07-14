@@ -1,0 +1,65 @@
+<html>
+<head>
+
+	<title>{% block title %}Boco Online Store{% endblock %}</title>
+
+	{% load staticfiles %}
+	<link rel='stylesheet' type='text/css' href="{% static 'store/style.css' %}?version=51" />
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  <script src="https://use.fontawesome.com/6c7085d3ee.js"></script>
+
+  <style>
+  body {
+    background: url({% static 'store/images/gradient_body.png' %}) no-repeat center fixed; 
+    background-size: cover; 
+  }
+
+
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'store:index' %}"><i class="fa fa-home fa-1x" aria-hidden="true"></i> Home</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        {% if products %}
+          {% for product in products %}            
+            <li><a href="{% url 'store:types' product.id %}" style='font-size:15px;'>{{ product.name }}</a></li>                
+          {% endfor %}
+        {% endif %}  
+      </ul>
+      <ul class='nav navbar-nav navbar-right'>
+
+        <li><a href="{% url 'store:cart' %}" style='font-size:15px;'><i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i><strong> Go to Cart</strong></a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+{% block body %}
+{% endblock %}
+
+</body>	
+</html>
+

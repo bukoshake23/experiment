@@ -1,0 +1,84 @@
+{% extends 'store/base.html' %}
+
+
+{% block body %}
+	<style>
+
+	.btn.btn-primary {
+		float: right;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		margin-right: 40px;
+	}
+
+	.no-products {
+			border: 1px;
+			border-radius: 10px;
+			background-color: white;			
+	}
+
+
+	.caption-design {
+		background-color: #d0d0d0; 
+		overflow: hidden;
+
+	}
+
+	</style>
+	{% if types %}		
+		{% if error_message %}
+			<div class='alert alert-danger'>
+				{% for error in error_message %}
+					<strong>{{ error }}</strong><br>
+				{% endfor %}
+			</div>			
+		{% endif %}
+		<br>	
+		<div class='container-fluid'>
+			<div class='row'>	
+				{% for type in types %}								
+					<div class="col-sm-6 col-md-5 col-lg-3">
+						<div class='thumbnail'>
+							<img src='{{ type.picture.url }}' class='img-responsive'>		
+							<div class='caption caption-design'>								
+								
+								<strong>Name:</strong> {{ type.name }}<br>
+								<strong>Description:</strong><br> {{ type.description }}<br>
+								<strong>Price:</strong> PHP {{ type.price }}<br>							
+
+								{% if type.small_size or type.medium_size or type.large_size or type.no_size %}					
+									<form action="{% url 'store:types' product_id %}" method='post'>{% csrf_token %}	
+												
+										{% include "store/type_forms_sizes.html" with field=form.small_size type_size=type.small_size %}
+
+										{% include "store/type_forms_sizes.html" with field=form.medium_size type_size=type.medium_size %}
+
+										{% include "store/type_forms_sizes.html" with field=form.large_size type_size=type.large_size %}
+
+										{% include "store/type_forms_sizes.html" with field=form.no_size type_size=type.no_size %}
+
+										<input type="hidden" name="name" id="id_name" value="{{ type.name }}">
+										<input type="hidden" name="price" id="id_price" value="{{ type.price }}">
+										<input type="hidden" name="product_code" id="id_product_code" value="{{ type.product_code }}">
+										
+										<button input='submit' class='btn btn-primary'>Add to Cart</button>					
+										
+									</form>
+															
+								{% else %}
+									SOLD OUT
+								{% endif %}
+									
+							</div>
+						</div>
+					</div>							
+				{% endfor %}		
+			</div>
+		</div>
+	{% else %}
+	<div class='container no-products'>
+		<br><br><center><h3>Sorry, no products yet for this category</h3></center><br><br>
+	</div>
+	{% endif %}
+
+{% endblock %}

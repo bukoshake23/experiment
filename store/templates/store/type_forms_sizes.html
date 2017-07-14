@@ -1,0 +1,11 @@
+	
+{% if type_size %}																										
+	<div class='form-group row'>							
+		{{ field.errors }}
+		<label for='{{ field.id }}' class='col-sm-4 col-form-label'>{{ field.label_tag }}</label>
+		<div class='col-sm-7'>
+			{{ field }}
+		</div>
+	</div>	
+
+{% endif %}

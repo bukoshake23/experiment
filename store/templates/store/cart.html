@@ -1,0 +1,97 @@
+{% extends 'store/base.html' %}
+
+
+{% block body %}
+	<style>
+		.no-item {
+			border: 1px;
+			border-radius: 10px;
+			background-color: white;			
+		}
+		.container-form {
+			background-color:#d0d0d0; 
+			border:1px; 
+			border-radius:10px;
+		}
+	</style>
+
+	{% if total %}
+		
+		<div class='table-responsive'>
+			<table class='table'>
+				<thead>
+					<tr class='active'>
+						<th>Items</th>
+						<th>Price</th>
+						<th>Quantity</th>	
+						<th colspan='2'></th>			
+					</tr>
+				</thead>
+				<tbody>
+					{% for item_num, attrib in request.session.items %}												
+						{% if attrib.name and attrib.price %}											
+							<tr class='active'>															
+								<td>{{ attrib.name }}</td>
+								<td>{{ attrib.price }}</td>
+								<td>
+									{% if attrib.small_size %}
+										Small: {{ attrib.small_size }}	<br>										
+									{% endif %}
+									{% if attrib.medium_size %}
+										Medium: {{ attrib.medium_size }}<br>										
+									{% endif %}
+									{% if attrib.large_size %}
+										Large: {{ attrib.large_size }}												
+									{% endif %}
+									{% if attrib.no_size %}
+										{{ attrib.no_size }}														
+									{% endif %}
+								</td>
+								<td>
+									<form action="{% url 'store:cart' %}" method="post">{% csrf_token %}
+										<input type='hidden' name='item_delete' value='{{ item_num }}'>
+										<button type='submit' class='btn btn-danger'>Delete</button>
+									</form>
+								</td>										
+							</tr>	
+						{% endif %}
+					{% endfor %}
+					<tr class='active'>	
+						<td colspan='4'>
+							<h3><strong>Total: {{ total }}</strong></h3>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class='container container-form'>
+			<br><br>
+			<form action="{% url 'store:checkout' %}" method='post'>{% csrf_token %}
+				{% for field in form.visible_fields %}
+					<div class='form-group row'>
+						<div class='col-sm-2 col-md-1'>
+							<label for='{{ field.id }}' class='col-sm-6 col-form-label'>{{ field.label_tag }}</label>
+						</div>	
+						<div class='col-sm-9 col-md-10'>						
+							{{ field.errors }}
+							{{ field }}					
+						</div>	
+					</div>				
+				{% endfor %}			
+					<input type="hidden" name="total" id="id_total" value="{{ total }}">		
+					<div class='col-md-6'>
+						<button type='submit' class='btn btn-success'>Checkout</button>						
+					</div>
+			</form>
+			<br><br><br>
+		</div>
+		
+	{% else %}
+		<div class='container no-item'>
+			<br><br><center><h3>No items added yet. <a href="{% url 'store:index' %}">Click here</a> to go back to homepage </h3></center><br><br>
+		</div>
+	{% endif %}
+	<br><br><br><br>
+
+{% endblock %}

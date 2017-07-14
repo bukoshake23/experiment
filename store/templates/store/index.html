@@ -1,0 +1,79 @@
+{% extends 'store/base.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+
+<style>
+.jumbo-bg {
+	background-color: #0f3c78;
+}
+
+h1.jumbo-font {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 400%;	
+	color: #ffa700;
+}
+
+.row-products {
+	background: url({% static 'store/images/gradient_prod2.png' %}) no-repeat center fixed;
+	background-size: cover; 
+	border:1px; 
+	border-radius:10px;
+}
+
+.name-product {
+	font-size: 350%; 
+	font-family: "Times New Roman", Georgia, Serif;
+	color: #0f3c78;
+	font-style: italic;
+	text-align: center;	
+	padding:20 0 20 0;
+}
+
+.img-product {
+	border:1px; 
+	border-radius:10px; 
+	padding: 10 0 10 0;
+}
+
+.under-maintenance {
+	border: 1px;
+	border-radius: 10px;
+	background-color: white;			
+}
+
+</style>
+
+
+{% if products %}
+	<div class="jumbotron jumbo-bg">
+		<div class='container-fluid'>			
+			<h1 class='jumbo-font'><center><i style='color: white'>Welcome to </i>Neogz's<i style='color: white'>!</i></center></h1>
+
+		</div>	
+	</div>	
+	{% for product in products %}
+			<div class='container' >						
+				<a href="{% url 'store:types' product.id %}">	
+					<div class='row row-products'>			
+							<div class="col-md-7">
+								<center><img src='{{ product.logo.url }}' class='img-responsive img-product'></center>
+					  		</div>				  							  					  			
+			  				<div class="col-md-5 name-product">				  						  			  	
+			  					{{ product.name }}			  					
+			  				</div>		
+		  			</div>
+		  			<br>
+				</a>	  			
+			</div>			
+	{% endfor %}
+{% else %}
+	<div class='container under-maintenance'>
+		<br><br><center><h1>STORE UNDER MAINTENANCE</h1></center><br><br>
+	</div>
+{% endif %}
+
+{% endblock %}
+
+
